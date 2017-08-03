@@ -39,23 +39,28 @@ def naked_twins(values):
         the values dictionary with the naked twins eliminated from peers.
     """
     bx = boxes.copy()
+    print(bx)
+    # Find all instances of naked twins
     for v in bx:
         temp = values[v]
-        for p in peers[v]:
-            if values[p] == temp:
-                twin = values[v]
-                bx.remove(v)
-                bx.remove(p)
-                # Find all instances of naked twins
-                twin_peer = set(peers[v]).union(set(peers[p]))
-        
-        if twin_peer: 
-            for i in twin_peer:
-                if len(values[i]) > 1:
-                    for t in twin:
-                        if t in values[i]:
-                            values[i] = values[i].replace(t, "")
-        # Eliminate the naked twins as possibilities for their peers
+        if len(temp) == 2:
+            print(temp)
+            for p in peers[v]:
+                if values[p] == temp:
+                    twin = values[v]
+                    bx.remove(v)
+                    bx.remove(p)
+
+                    twin_peer = set(peers[v]).union(set(peers[p]))
+                    print(twin_peer)
+                    # Eliminate the naked twins as possibilities for their peers
+                    if twin_peer:
+                        for i in twin_peer:
+                            if len(values[i]) > 1:
+                                for t in twin:
+                                    if t in values[i]:
+                                        values[i] = values[i].replace(t, "")
+
         return values
 
 def grid_values(grid):
@@ -83,7 +88,7 @@ def display(values):
     Display the values as a 2-D grid.
     Args:
         values(dict): The sudoku in dictionary form
-    """   
+    """
     width = 1+max(len(values[s]) for s in boxes)
     line = '+'.join(['-'*(width*3)]*3)
     for r in rows:
@@ -112,7 +117,7 @@ def eliminate(values):
     return values
 
 def only_choice(values):
-     """
+    """
     Go through all the units, and whenever there is a unit with a value that only fits in one box, assign the value to this box.
     Input: A sudoku in dictionary form.
     Output: The resulting sudoku in dictionary form.
@@ -122,7 +127,7 @@ def only_choice(values):
             dplaces = [box for box in unit if digit in values[box]]
             if len(dplaces) == 1:
                 values[dplaces[0]] = digit
-            
+
     return values
 
 def reduce_puzzle(values):
@@ -134,7 +139,7 @@ def reduce_puzzle(values):
     Output: The resulting sudoku in dictionary form.
     """
     stalled = False
-    
+
     while not stalled:
         # Check how many boxes have a determined value
         solved_values_before = len([box for box in values.keys() if len(values[box]) == 1])
@@ -157,7 +162,7 @@ def search(values):
     value = reduce_puzzle(values)
     if not value:
         return False
-    if all(len(values[s]) == 1 for s in boxes): 
+    if all(len(values[s]) == 1 for s in boxes):
         return values ## Solved!
     # Choose one of the unfilled squares with the fewest possibilities
     temp = {}
@@ -183,6 +188,12 @@ def solve(grid):
     Returns:
         The dictionary representation of the final sudoku grid. False if no solution exists.
     """
+    # values = grid_values(grid)
+    # values = search(values)
+    # values = naked_twins(values)
+    # return values
+
+
 
 if __name__ == '__main__':
     diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
