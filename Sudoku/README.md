@@ -3,11 +3,11 @@
 
 # Question 1 (Naked Twins)
 Q: How do we use constraint propagation to solve the naked twins problem?  
-A: *Student should provide answer here*
+A: In the naked twins problem, it requires that if there are twins, i.e. units in the same row or column have exactly two and same possible values, we elimiate the possibility of other units on the same row or column having these two values. This constraint help us further reduce the number of possibilities of the whole grid, thus finding the solution of the grid.
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: *Student should provide answer here*
+A: The diagonal sudoku requires the numbers 1 to 9 should all appear exactly once on two diagonal lines. Thus, if only one number appear on a diagonal line, the rest of the units on that line should not take this number. We use this constraint to narrow the possibilities down to fewer when we are trying to solve the problem. 
 
 ### Install
 
