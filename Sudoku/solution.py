@@ -6,6 +6,10 @@ def cross(A, B):
 
 rows = 'ABCDEFGHI'
 cols = '123456789'
+# create a variable to store diagonal unit
+diag = [ [rows[i]+cols[i] for i in range(len(rows))],\
+[rows[i]+cols[len(rows)-1-i] for i in range(len(rows))] ]
+
 boxes = cross(rows, cols)
 
 row_units = [cross(r, cols) for r in rows]
@@ -43,12 +47,12 @@ def naked_twins(values):
     for v in dict_value:  # v is a list
         length = len(dict_value[v])
         if length > 1:
-            i = 0 ; j = i+1 
+            i = 0 ; j = i+1
             while i < length and j < length:
-                curr = dict_value[v][i] 
-                
+                curr = dict_value[v][i]
+
                 while j < length:
-                    nxt = dict_value[v][j] 
+                    nxt = dict_value[v][j]
                     if curr[0] == nxt[0]: # same row
                         row_peer = set([i for i in boxes if i[0] == curr[0]])
                         row_peer.remove(curr)
@@ -65,7 +69,7 @@ def naked_twins(values):
                             for v1 in v:
                                 if v1 in values[p]:
                                     values[p] = values[p].replace(v1, "")
-                            
+
                     j += 1
                 i += 1; j = i+1
     return values
@@ -121,6 +125,16 @@ def eliminate(values):
             for p in peers[v]:
                 if temp in values[p] :
                     values[p] = values[p].replace(temp, "")
+
+    # diagonal line
+    for d_list in diag:
+        for d in d_list:
+            if len(values[d]) == 1:
+                temp = values[d]
+                for g in d_list:
+                    if g != d and temp in values[g]:
+                        values[g] = values[g].replace(temp, "")
+
     return values
 
 def only_choice(values):
@@ -129,12 +143,18 @@ def only_choice(values):
     Input: A sudoku in dictionary form.
     Output: The resulting sudoku in dictionary form.
     """
-    for unit in unitlist:
+    # go through all units on diagnal lines
+    for d_list in diag:
+        for digit in '123456789':
+            dplaces = [box for box in d_list if digit in values[box]]
+            if len(dplaces) == 1:
+                values[dplaces[0]] = digit
+    # go through all other pairs
+    for unit in unitlist:  
         for digit in '123456789':
             dplaces = [box for box in unit if digit in values[box]]
             if len(dplaces) == 1:
                 values[dplaces[0]] = digit
-
     return values
 
 def reduce_puzzle(values):
@@ -195,10 +215,8 @@ def solve(grid):
     Returns:
         The dictionary representation of the final sudoku grid. False if no solution exists.
     """
-    # values = grid_values(grid)
-    # values = search(values)
-    # values = naked_twins(values)
-    # return values
+    values = grid_values(grid)
+    return search(values)
 
 
 
