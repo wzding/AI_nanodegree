@@ -38,30 +38,37 @@ def naked_twins(values):
     Returns:
         the values dictionary with the naked twins eliminated from peers.
     """
-    bx = boxes.copy()
-    print(bx)
-    # Find all instances of naked twins
-    for v in bx:
-        temp = values[v]
-        if len(temp) == 2:
-            print(temp)
-            for p in peers[v]:
-                if values[p] == temp:
-                    twin = values[v]
-                    bx.remove(v)
-                    bx.remove(p)
-
-                    twin_peer = set(peers[v]).union(set(peers[p]))
-                    print(twin_peer)
-                    # Eliminate the naked twins as possibilities for their peers
-                    if twin_peer:
-                        for i in twin_peer:
-                            if len(values[i]) > 1:
-                                for t in twin:
-                                    if t in values[i]:
-                                        values[i] = values[i].replace(t, "")
-
-        return values
+    dict_unit = dict( (key, values[key] ) for key in values if len(values[key]) == 2)
+    dict_value = dict( (i,[j for j in dict_unit if dict_unit[j] ==i]) for i in set(dict_unit.values()))
+    for v in dict_value:  # v is a list
+        length = len(dict_value[v])
+        if length > 1:
+            i = 0 ; j = i+1 
+            while i < length and j < length:
+                curr = dict_value[v][i] 
+                
+                while j < length:
+                    nxt = dict_value[v][j] 
+                    if curr[0] == nxt[0]: # same row
+                        row_peer = set([i for i in boxes if i[0] == curr[0]])
+                        row_peer.remove(curr)
+                        row_peer.remove(nxt)
+                        for p in row_peer: # row neighbour
+                            for v1 in v:
+                                if v1 in values[p]:
+                                    values[p] = values[p].replace(v1, "")
+                    if curr[1] == nxt[1]: # same column
+                        col_peer = set([i for i in boxes if i[1] == curr[1]])
+                        col_peer.remove(curr)
+                        col_peer.remove(nxt)
+                        for p in col_peer: # column neighbour
+                            for v1 in v:
+                                if v1 in values[p]:
+                                    values[p] = values[p].replace(v1, "")
+                            
+                    j += 1
+                i += 1; j = i+1
+    return values
 
 def grid_values(grid):
     """
