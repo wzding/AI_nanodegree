@@ -42,34 +42,38 @@ def naked_twins(values):
     Returns:
         the values dictionary with the naked twins eliminated from peers.
     """
-    dict_unit = dict( (key, values[key] ) for key in values if len(values[key]) == 2)
-    dict_value = dict( (i,[j for j in dict_unit if dict_unit[j] ==i]) for i in set(dict_unit.values()))
-    for v in dict_value:  # v is a list
+    # dict_unit's key is a unit and its values is a string of two numbers
+    # {'B4': '46', 'B5': '46', 'C2': '68'}
+    dict_unit = dict( (key, values[key] ) for key in values if len(values[key])\
+     == 2)
+    # dict_value's key is a string of two numbers and its values is a list of
+    # possible units, such as {'46': ['B4', 'B5'], '68': ['C2']}
+    dict_value = dict( (i,[j for j in dict_unit if dict_unit[j] ==i]) \
+    for i in set(dict_unit.values()))
+
+    for v in dict_value:  # v is a string of two numbers
         length = len(dict_value[v])
-        if length > 1:
+        if length > 1: # there are two units have exactly same two values
             i = 0 ; j = i+1
             while i < length and j < length:
-                curr = dict_value[v][i]
-
+                curr = dict_value[v][i]  # curr and nxt are unit
                 while j < length:
                     nxt = dict_value[v][j]
-                    if curr[0] == nxt[0]: # same row
-                        row_peer = set([i for i in boxes if i[0] == curr[0]])
-                        row_peer.remove(curr)
-                        row_peer.remove(nxt)
-                        for p in row_peer: # row neighbour
-                            for v1 in v:
-                                if v1 in values[p]:
-                                    values[p] = values[p].replace(v1, "")
-                    if curr[1] == nxt[1]: # same column
-                        col_peer = set([i for i in boxes if i[1] == curr[1]])
-                        col_peer.remove(curr)
-                        col_peer.remove(nxt)
-                        for p in col_peer: # column neighbour
-                            for v1 in v:
-                                if v1 in values[p]:
-                                    values[p] = values[p].replace(v1, "")
-
+                    peer_list = [unitlist[i] for i in range(len(unitlist)) if \
+                    curr in unitlist[i] and nxt in unitlist[i]]
+                    # check whether curr and nxt are peers
+                    if len(peer_list)>0:
+                        for k in range(len(peer_list)):
+                            # temp is a row or column or box of curr and nxt but
+                            # does not contain these two units
+                            temp = [ele for ele in peer_list[k] \
+                            if ele != curr and ele != nxt]
+                            # go through each unit in temp
+                            for p in temp:
+                                # go through each value in v
+                                for v1 in v:
+                                    if v1 in values[p]:
+                                        values[p] = values[p].replace(v1, "")
                     j += 1
                 i += 1; j = i+1
     return values
@@ -150,7 +154,7 @@ def only_choice(values):
             if len(dplaces) == 1:
                 values[dplaces[0]] = digit
     # go through all other pairs
-    for unit in unitlist:  
+    for unit in unitlist:
         for digit in '123456789':
             dplaces = [box for box in unit if digit in values[box]]
             if len(dplaces) == 1:
