@@ -38,14 +38,20 @@ def custom_score(game, player):
         return float("-inf")
     if game.is_winner(player):
         return float("inf")
-    player_moves = len(game.get_legal_moves(player))
-    opponent_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(player_moves-2*opponent_moves)
+    player_moves = game.get_legal_moves(player)
+    opponent_moves = game.get_legal_moves(game.get_opponent(player))
+    corners = [(0,0), (0,game.width-1), (game.height-1,0), (game.height-1,game.width-1)]
+    player_in_corner = [move for move in player_moves if move in corners]
+    opponent_in_corner = [move for move in opponent_moves if move in corners]
+    return float(len(player_moves) - len(player_in_corner) - \
+    (len(opponent_moves) - len(opponent_in_corner)))
 
 
 def custom_score_2(game, player):
     """Calculate the heuristic value of a game state from the point of view
-    of the given player.
+    of the given player. If a player's position is closer to the center of the
+    board, it is more probable that this player can do better than a player
+    whose remaining moves are near the edge of the board.
 
     Note: this function should be called from within a Player instance as
     `self.score()` -- you should not need to call this function directly.
@@ -71,7 +77,7 @@ def custom_score_2(game, player):
         return float("inf")
     player_moves = len(game.get_legal_moves(player))
     opponent_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(player_moves-opponent_moves)
+    return float(player_moves-2*opponent_moves)
 
 
 def custom_score_3(game, player):
@@ -100,9 +106,12 @@ def custom_score_3(game, player):
         return float("-inf")
     if game.is_winner(player):
         return float("inf")
-    player_moves = len(game.get_legal_moves(player))
-    opponent_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return float(player_moves)
+    center_y_pos, center_x_pos = int(game.height / 2), int(game.width / 2)
+    player_y_pos, player_x_pos = game.get_player_location(player)
+    opponent_y_pos, opponent_x_pos = game.get_player_location(game.get_opponent(player))
+    player_distance = abs(player_y_pos - center_y_pos) + abs(player_x_pos - center_x_pos)
+    opponent_distance = abs(opponent_y_pos - center_y_pos) + abs(opponent_x_pos - center_x_pos)
+    return - float(player_distance - opponent_distance)
 
 
 class IsolationPlayer:
