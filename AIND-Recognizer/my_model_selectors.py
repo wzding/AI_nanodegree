@@ -1,7 +1,7 @@
 import math
 import statistics
 import warnings
-
+warnings.filterwarnings('ignore')
 import numpy as np
 from hmmlearn.hmm import GaussianHMM
 from sklearn.model_selection import KFold
@@ -67,7 +67,6 @@ class SelectorBIC(ModelSelector):
     http://www2.imm.dtu.dk/courses/02433/doc/ch6_slides.pdf
     Bayesian information criteria: BIC = -2 * logL + p * logN
     """
-
     def select(self):
         """ select the best model for self.this_word based on
         BIC score for n between self.min_n_components and self.max_n_components
@@ -75,9 +74,26 @@ class SelectorBIC(ModelSelector):
         :return: GaussianHMM object
         """
         warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-        # TODO implement model selection based on BIC scores
-        raise NotImplementedError
+        # implement model selection based on BIC scores
+        ns = range(self.min_n_components, self.max_n_components + 1)
+        bics = []
+        models = []
+        for n in ns:
+            try:
+                model = self.base_model(n)
+                logL = model.score(self.X, self.lengths)
+                N = sum(self.lengths)
+                free_params = np.square(n) + ( 2 * n * N ) - 1
+                bic = -2 * logL + free_params * np.log(N)
+                bics.append(bic)
+                models.append(model)
+            except:
+                pass
+        if len(bics) > 0:
+            bic_final = np.argmin(bics)
+            return models[bic_final]
+        else:
+            return None
 
 
 class SelectorDIC(ModelSelector):
@@ -92,18 +108,68 @@ class SelectorDIC(ModelSelector):
 
     def select(self):
         warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-        # TODO implement model selection based on DIC scores
-        raise NotImplementedError
+        # implement model selection based on DIC scores
+        ns = range(self.min_n_components, self.max_n_components + 1)
+        dics = []
+        other_words = []
+        logLs = []
+        models = []
+        for word in self.words:
+            if word != self.this_word:
+                # append other words' X and lenghts
+                other_words.append(self.hwords[word])
+        try:
+            for n in ns:
+                model = self.base_model(n)
+                logL = model.score(self.X, self.lengths)
+                logLs.append(logL)
+                models.append(model)
+        except Exception as e:
+            pass
+        for LogL, model in zip(logLs, models):
+            # score of other words' X and lengths
+            logL_other = [model.score(word[0], word[1]) for word in other_words]
+            dic = LogL - np.mean(logL_other)
+            dics.append(dic)
+        if len(dics) > 0:
+            dic_final = np.argmax(dics)
+            return models[dic_final]
+        else:
+            return None
 
 
 class SelectorCV(ModelSelector):
     ''' select best model based on average log Likelihood of cross-validation folds
 
     '''
-
     def select(self):
+        # implement model selection using CV
         warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-        # TODO implement model selection using CV
-        raise NotImplementedError
+        split_method = KFold(n_splits = 3, shuffle = False, random_state = self.random_state)
+        word_seq = self.sequences
+        score = []
+        score_avgs = []
+        models = []
+        ns = range(self.min_n_components, self.max_n_components + 1)
+        for n in ns:
+            try:
+                model = self.base_model(n)
+                # only if there are more than 2 samples, we do cross validation
+                if len(word_seq) > 2:
+                    for cv_train_idx, cv_test_idx in split_method.split(word_seq):
+                        self.X, self.lengths = combine_sequences(cv_train_idx, word_seq)
+                        X_test, lengths_test = combine_sequences(cv_test_idx, word_seq)
+                        logL = model.score(X_test, lengths_test)
+                        score.append(logL)
+                else:
+                    logL = model.score(self.X, self.lengths)
+                    score.append(logL)
+                score_avgs.append(np.mean(score))
+                models.append(model)
+            except Exception as e:
+                pass
+        if len(score_avgs) > 0:
+            cv_final = np.argmax(score_avgs)
+            return models[cv_final]
+        else:
+            return None
