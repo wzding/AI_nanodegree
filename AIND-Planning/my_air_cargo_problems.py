@@ -64,10 +64,10 @@ class AirCargoProblem(Problem):
                                         expr("At({}, {})".format(p, a))]
                         precond_neg = []
                         effect_add = [expr("In({}, {})".format(c, p))]
-                        effect_rem = [expr("At({}, {})".format(c, a))]
+                        effect_rm = [expr("At({}, {})".format(c, a))]
                         load = Action(expr("Load({}, {}, {})".format(c, p, a)),
                                      [precond_pos, precond_neg],
-                                     [effect_add, effect_rem])
+                                     [effect_add, effect_rm])
                         loads.append(load)
             return loads
 
@@ -85,10 +85,10 @@ class AirCargoProblem(Problem):
                                        ]
                         precond_neg = []
                         effect_add = [expr("At({}, {})".format(c, a))]
-                        effect_rem = [expr("In({}, {})".format(c, p))]
+                        effect_rm = [expr("In({}, {})".format(c, p))]
                         unload = Action(expr("Unload({}, {}, {})".format(c, p, a)),
                                      [precond_pos, precond_neg],
-                                     [effect_add, effect_rem])
+                                     [effect_add, effect_rm])
                         unloads.append(unload)
             return unloads
 
@@ -106,14 +106,15 @@ class AirCargoProblem(Problem):
                                            ]
                             precond_neg = []
                             effect_add = [expr("At({}, {})".format(p, to))]
-                            effect_rem = [expr("At({}, {})".format(p, fr))]
+                            effect_rm = [expr("At({}, {})".format(p, fr))]
                             fly = Action(expr("Fly({}, {}, {})".format(p, fr, to)),
                                          [precond_pos, precond_neg],
-                                         [effect_add, effect_rem])
+                                         [effect_add, effect_rm])
                             flys.append(fly)
             return flys
 
         return load_actions() + unload_actions() + fly_actions()
+
 
     def actions(self, state: str) -> list:
         """ Return the actions that can be executed in the given state.
@@ -186,21 +187,20 @@ class AirCargoProblem(Problem):
         conditions by ignoring the preconditions required for an action to be
         executed.
         """
+        kb = PropKB()
+        kb.tell(decode_state(node.state, self.state_map).pos_sentence())
+        kb_clauses = kb.clauses
         count = 0
-        goals = set(self.goal)
-        all_actions = self.actions_list
-        while(goals):
-            next_node = max(all_actions, key=lambda x: len([e for e in x.effect_add if e in goals]))
-            all_actions.remove(next_node)
-            goals -= set(next_node.effect_add)
-            count += 1
+        for clause in self.goal:
+            if clause not in kb_clauses:
+                count += 1
         return count
 
 
 def air_cargo_p1() -> AirCargoProblem:
     cargos = ['C1', 'C2']
     planes = ['P1', 'P2']
-    airports = ['JFK', 'SFO']
+    airports = ['SFO', 'JFK']
     pos = [expr('At(C1, SFO)'),
            expr('At(C2, JFK)'),
            expr('At(P1, SFO)'),
@@ -233,9 +233,7 @@ def air_cargo_p2() -> AirCargoProblem:
            expr('At(P2, JFK)'),
            expr('At(P3, ATL)'),
            ]
-    neg = [
-
-           expr('At(C1, JFK)'),
+    neg = [expr('At(C1, JFK)'),
            expr('At(C1, ATL)'),
            expr('In(C1, P1)'),
            expr('In(C1, P2)'),
@@ -320,5 +318,3 @@ def air_cargo_p3() -> AirCargoProblem:
             expr('At(C4, SFO)'),
             ]
     return AirCargoProblem(cargos, planes, airports, init, goal)
-
-    pass
