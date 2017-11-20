@@ -10,19 +10,19 @@ The Artificial Intelligence Nanodegree is an online certification intended to in
 
 ### Part 1: Foundation of AI 
 
-- Project 1: Solve Sudoku
+- Project 1: [Solve Sudoku](https://github.com/wzding/Artificial_Intelligence_Nanodegree/tree/master/Sudoku)
 
   In this project, I implemented two extensions of the sudoku solver. The first one is to implement the technique called "naked twins". The second one is to solve a diagonal sudoku.
 
-- Project 2: Build an Adversarial Search Agent
+- Project 2: [Build an Adversarial Search Agent](https://github.com/wzding/Artificial_Intelligence_Nanodegree/tree/master/AIND-Isolation)
 
   The goal of this project is to develop an adversarial search agent to play the game "Isolation". Isolation is a deterministic, two-player game of perfect information in which the players alternate turns moving a single piece from one cell to another on a board. Whenever either player occupies a cell, that cell becomes blocked for the remainder of the game. The first player with no remaining legal moves loses, and the opponent is declared the winner.
 
-- Project 3: Creat an Domain-Independent Planner
+- Project 3: [Creat an Domain-Independent Planner](https://github.com/wzding/Artificial_Intelligence_Nanodegree/tree/master/AIND-Planning)
 
   In this project, the goal is to define a group of problems in classical PDDL (Planning Domain Definition Language) for the air cargo domain. I then set up the problems for search, experiment with various automatically generated heuristics, including planning graph heuristics, to solve the problems, and then provide an analysis of the results.
   
-- Project 4: Build a Sign Language Recognizer
+- Project 4: [Build a Sign Language Recognizer](https://github.com/wzding/Artificial_Intelligence_Nanodegree/tree/master/AIND-Recognizer)
 
 ### Part 2: Deep Learning and Applications
 
