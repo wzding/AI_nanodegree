@@ -10,7 +10,7 @@ The Artificial Intelligence Nanodegree is an online certification intended to in
 
 ### Part 1: Foundation of AI 
 
-- Project 1: [Solve Sudoku](https://github.com/wzding/Artificial_Intelligence_Nanodegree/tree/master/Sudoku)
+- Project 1: [Solve a Sudoku with AI](https://github.com/wzding/Artificial_Intelligence_Nanodegree/tree/master/Sudoku)
 
   In this project, I implemented two extensions of the sudoku solver. The first one is to implement the technique called "naked twins". The second one is to solve a diagonal sudoku.
 
@@ -26,8 +26,18 @@ The Artificial Intelligence Nanodegree is an online certification intended to in
 
 ### Part 2: Deep Learning and Applications
 
+- Project 1: [Dog Breed Classifier]()
+
+- Project 2: [Time Series Prediction and Text Generation]()
+
 ### Part 3: Computer Vision
+
+- Project 1: [CV Capstone Project]()
 
 ### Part 4: Natural Language Processing
 
+- Project 1: [Machine Translation]()
+
 ### Part 5: Voice User Interfaces
+
+- Project 1: [DNN Speech Recognizer]()
