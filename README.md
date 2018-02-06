@@ -32,14 +32,6 @@ The Artificial Intelligence Nanodegree is an online certification intended to in
 
 - Project 2: [Time Series Prediction and Text Generation](https://github.com/wzding/Artificial_Intelligence_Nanodegree/tree/master/aind2-rnn)
 
-### Part 3: Computer Vision
-
-- Project 1: [CV Capstone Project]()
-
-### Part 4: Natural Language Processing
-
-- Project 1: [Machine Translation]()
-
-### Part 5: Voice User Interfaces
+### Part 3: Voice User Interfaces
 
 - Project 1: [DNN Speech Recognizer]()
