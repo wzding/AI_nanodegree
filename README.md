@@ -34,4 +34,4 @@ The Artificial Intelligence Nanodegree is an online certification intended to in
 
 ### Part 3: Voice User Interfaces
 
-- Project 1: [DNN Speech Recognizer]()
+- Project 1: [DNN Speech Recognizer](https://github.com/wzding/Artificial_Intelligence_Nanodegree/tree/master/VUI-Capstone)
