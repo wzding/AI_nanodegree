@@ -28,7 +28,7 @@ The Artificial Intelligence Nanodegree is an online certification intended to in
 
 ### Part 2: Deep Learning and Applications
 
-- Project 1: [Dog Breed Classifier](https://github.com/wzding/Machine_Learning_Nanodegree/tree/master/dog-project)
+- Project 1: [Dog Breed Classifier](https://github.com/wzding/Machine_Learning_Nanodegree/tree/master/Dog_Identification_App)
 
 - Project 2: [Time Series Prediction and Text Generation](https://github.com/wzding/Artificial_Intelligence_Nanodegree/tree/master/aind2-rnn)
 
