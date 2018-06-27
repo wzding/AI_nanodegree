@@ -1,0 +1,15 @@
+-------------------
+input chars = 
+she eclipses and predominates the whole of her sex. it was not that he felt any emotion akin to love"
+predicted chars = 
+ in the hand sell whe have her had been out up now there as our sing. i well be to be to entions and"
+-------------------
+input chars = 
+es and predominates the whole of her sex. it was not that he felt any emotion akin to love for irene"
+predicted chars = 
+ to charrain.  the furner was a bright of this will of the hand of the door.  i should be hound to h"
+-------------------
+input chars = 
+dominates the whole of her sex. it was not that he felt any emotion akin to love for irene adler. al"
+predicted chars = 
+lowed whet in the corners and the rain sole that i would gave and some which lid to me that i have n"
