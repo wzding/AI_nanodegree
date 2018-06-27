@@ -1,7 +1,7 @@
 # Artificial Intelligence Nanodegreee
 Udacity's Artificial Intelligence Nanodegree projects.
 
-This repository contains project files for Udacity's Artificial Intelligence Nanodegree program which I started working on on 23 July, 2017.
+This repository contains project files for Udacity's Artificial Intelligence Nanodegree program which I started working on since 23 July, 2017.
 
 The Artificial Intelligence Nanodegree is an online certification intended to introduce students to the broad field of artificial intelligence, and prepare them for a wide variety of opportunities in the AI field.
 
